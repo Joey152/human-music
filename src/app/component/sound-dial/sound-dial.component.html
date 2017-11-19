@@ -6,7 +6,7 @@
       [attr.cy]="innerCircleY"
       [attr.r]="innerCircleR"
       fill="white"
-      (click)="moveDial($event)">
+      (mousedown)="onMouseDown($event)">
     </circle>
     <circle [attr.cx]="radius" [attr.cy]="railRadius" [attr.r]="5" fill="red"></circle>
   </svg>

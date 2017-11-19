@@ -24,6 +24,8 @@ export class SoundDialComponent {
 
   railRadius = this.radius - this.innerCircleY
 
+  mouseDown = false;
+
   constructor() { }
 
   ngAfterViewInit() {
@@ -32,13 +34,24 @@ export class SoundDialComponent {
     this.boundingY = element.offsetTop;
   }
 
-  // @HostListener('document:mousemove', ['$event'])
+  @HostListener('document:mousemove', ['$event'])
   moveDial(event: MouseEvent) {
-    // if (event.)
-    const localPoint = this.toLocalPoint({x: event.pageX, y: event.pageY})
-    const mappedPoint = this.mapToInnerCircle(localPoint);
-    this.innerCircleX = mappedPoint.x;
-    this.innerCircleY = mappedPoint.y;
+    if (this.mouseDown) {
+      const localPoint = this.toLocalPoint({x: event.pageX, y: event.pageY})
+      const mappedPoint = this.mapToInnerCircle(localPoint);
+      this.innerCircleX = mappedPoint.x;
+      this.innerCircleY = mappedPoint.y;
+    }
+  }
+
+  onMouseDown(event: MouseEvent) {
+    event.preventDefault();
+    this.mouseDown = true;
+  }
+
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp(event: MouseEvent) {
+    this.mouseDown = false;
   }
 
   toLocalPoint(point: Point): Point {
@@ -47,9 +60,14 @@ export class SoundDialComponent {
     return {x: localX, y: localY};
   }
 
+  // https://math.stackexchange.com/questions/127613/closest-point-on-circle-edge-from-point-outside-inside-the-circle
   mapToInnerCircle(point: Point): Point {
-    const mappedX = 2;
-    const mappedY = 2;
-    return {x: point.x, y: point.y}
-  }
+    const lengthX = point.x - this.radius
+    const lengthY = point.y - this.radius
+    const length = Math.sqrt(Math.pow(lengthX,2) + Math.pow(lengthY,2))
+    const mappedX = this.radius + (this.railRadius * (lengthX / length));
+    const mappedY = this.radius + (this.railRadius * (lengthY / length));
+    if(length == 0) return {x: point.x, y: point.y} // whatdo
+    return {x: mappedX, y: mappedY}
+  }  
 }
