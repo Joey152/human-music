@@ -55,4 +55,8 @@ export class PianoComponent implements OnInit {
     }
   }
 
+  isPressed(index: number) {
+    return this.keyDown.get(this.keyboard[index])
+  }
+
 }

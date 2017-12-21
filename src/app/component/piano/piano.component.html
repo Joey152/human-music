@@ -1,7 +1,8 @@
 <div class="piano">
   <hm-sound-button
-    *ngFor="let note of notes"
-    (mousedown)="play(note, note)"
+    *ngFor="let note of notes; index as index"
+    [pressed]="isPressed(index)"
+    (mousedown)="play(note)"
     (mouseup)="stop(note)"
     (mouseleave)="stop(note)">
   </hm-sound-button>

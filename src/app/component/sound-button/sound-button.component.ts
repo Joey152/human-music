@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SoundButtonComponent implements OnInit {
 
   @Input() offsetA: number;
+  @Input() pressed: boolean;
   label: string
 
   constructor() { }
