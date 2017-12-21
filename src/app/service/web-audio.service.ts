@@ -6,63 +6,58 @@ declare var AudioContext, webkitAudioContext: any;
 export class WebAudioService { 
 
   audioContext: AudioContext;
-  oscillators: OscillatorNode[];
+  oscillators: Map<string, OscillatorNode[]>;
   frequency: number;
+  baseFrequency: number = 55;
 
   constructor() {
     this.audioContext = new AudioContext();
-    this.oscillators = [];
+    this.oscillators = new Map();
   }
 
-  play(n: number): void {
-    this.frequency = this.note(n);
-
-    let oscillator = this.audioContext.createOscillator();
-    oscillator.connect(this.audioContext.destination);
-    oscillator.frequency.value = this.frequency;
-    oscillator.type = 'sine';
-    oscillator.start();
-
-    this.oscillators.push(oscillator);
+  play(n: number, id: string): void {
+    this.playFrequency(this.note(n), id);
   }
 
-  playFrequency(n: number): void {
+  playFrequency(n: number, id: string): void {
     let oscillator = this.audioContext.createOscillator();
     oscillator.connect(this.audioContext.destination);
     oscillator.frequency.value = n;
-    oscillator.type = 'sine';
+    oscillator.type = 'square';
+
     oscillator.start();
 
-    this.oscillators.push(oscillator);
+    if (!this.oscillators.has(id)) this.oscillators.set(id, []);
+    this.oscillators.get(id).push(oscillator);
   }
 
-  playChord(n: number, chord: string) {
+  playChord(n: number, chord: string, id: string) {
     switch(chord) {
       case "single":
-        this.play(n);
+        this.playFrequency(this.note(n), id);
         break;
       case "majorTriad":
-        this.play(n);
-        this.playFrequency(this.note(n)*5/4);
-        this.playFrequency(this.note(n)*3/2);
+        this.playFrequency(this.note(n), id);
+        this.playFrequency(this.note(n)*5/4, id);
+        this.playFrequency(this.note(n)*3/2, id);
         break;
       case "minorTriad":
-        this.play(n);
-        this.playFrequency(this.note(n)*6/5);
-        this.playFrequency(this.note(n)*3/2);
+        this.playFrequency(this.note(n), id);
+        this.playFrequency(this.note(n)*6/5, id);
+        this.playFrequency(this.note(n)*3/2, id);
         break;
       default:
-        this.play(n);
+        this.playFrequency(this.note(n), id);
     }
   }
 
-  stop() {
-    if (this.oscillators != null && this.oscillators.length > 0) {
-      this.oscillators.map(o => o.stop());
+  stop(id: string) {
+    if (this.oscillators.get(id) != null && this.oscillators.get(id).length > 0) {
+      this.oscillators.get(id).map(o => o.stop());
     }
   }
 
   private note(n: number) {
-    return 440*(Math.pow(2,n/12));
+    return this.baseFrequency*(Math.pow(2,n/12));
   }
 }
