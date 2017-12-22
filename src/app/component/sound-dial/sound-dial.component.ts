@@ -1,13 +1,13 @@
-import { Component, Input, ElementRef, ViewChild, HostListener } from "@angular/core";
+import { AfterViewInit, Component, Input, ElementRef, ViewChild, HostListener } from '@angular/core';
 
-interface Point {x: number, y: number};
+interface Point { x: number; y: number; }
 
 @Component({
     selector: 'hm-sound-dial',
     templateUrl: 'sound-dial.component.html'
 })
-export class SoundDialComponent {
-  
+export class SoundDialComponent implements AfterViewInit {
+
   @Input()
   radius = 100;
 
@@ -22,7 +22,7 @@ export class SoundDialComponent {
   innerCircleX = this.radius;
   innerCircleY = this.innerCircleR + 5;
 
-  railRadius = this.radius - this.innerCircleY
+  railRadius = this.radius - this.innerCircleY;
 
   mouseDown = false;
 
@@ -37,7 +37,7 @@ export class SoundDialComponent {
   @HostListener('document:mousemove', ['$event'])
   moveDial(event: MouseEvent) {
     if (this.mouseDown) {
-      const localPoint = this.toLocalPoint({x: event.pageX, y: event.pageY})
+      const localPoint = this.toLocalPoint({x: event.pageX, y: event.pageY});
       const mappedPoint = this.mapToInnerCircle(localPoint);
       this.innerCircleX = mappedPoint.x;
       this.innerCircleY = mappedPoint.y;
@@ -62,12 +62,12 @@ export class SoundDialComponent {
 
   // https://math.stackexchange.com/questions/127613/closest-point-on-circle-edge-from-point-outside-inside-the-circle
   mapToInnerCircle(point: Point): Point {
-    const lengthX = point.x - this.radius
-    const lengthY = point.y - this.radius
-    const length = Math.sqrt(Math.pow(lengthX,2) + Math.pow(lengthY,2))
+    const lengthX = point.x - this.radius;
+    const lengthY = point.y - this.radius;
+    const length = Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2));
     const mappedX = this.radius + (this.railRadius * (lengthX / length));
     const mappedY = this.radius + (this.railRadius * (lengthY / length));
-    if(length == 0) return {x: point.x, y: point.y} // whatdo
-    return {x: mappedX, y: mappedY}
-  }  
+    if (length === 0) { return {x: point.x, y: point.y}; } // whatdo
+    return {x: mappedX, y: mappedY};
+  }
 }

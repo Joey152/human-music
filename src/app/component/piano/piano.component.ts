@@ -12,7 +12,7 @@ export class PianoComponent implements OnInit {
 
   notes: number[];
   chord = 'single';
-  keyboard = ['a','w','s','e','d','r','f','t','g','y','h','u','j'];
+  keyboard = ['a', 'w', 's', 'e', 'd', 'r', 'f', 't', 'g', 'y', 'h', 'u', 'j'];
   keyDown: Map<string, boolean> = new Map();
 
   constructor(private webAudioService: WebAudioService) { }
@@ -40,7 +40,7 @@ export class PianoComponent implements OnInit {
     }
     else if (event.key === 'i') {
       this.webAudioService.baseFrequency *= 2;
-    } 
+    }
   }
 
   play(note: number) {
@@ -56,7 +56,7 @@ export class PianoComponent implements OnInit {
   }
 
   isPressed(index: number) {
-    return this.keyDown.get(this.keyboard[index])
+    return this.keyDown.get(this.keyboard[index]);
   }
 
 }

@@ -2,8 +2,18 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
+  "extends": [
+    "tslint-eslint-rules"
+  ],
   "rules": {
     "arrow-return-shorthand": true,
+    "brace-style": [
+      true,
+      "stroustrup",
+      {
+        "allowSingleLine": true
+      }
+    ],
     "callable-types": true,
     "class-name": true,
     "comment-format": [
@@ -76,8 +86,6 @@
     "one-line": [
       true,
       "check-open-brace",
-      "check-catch",
-      "check-else",
       "check-whitespace"
     ],
     "prefer-const": true,
@@ -138,5 +146,6 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true
-  }
+  },
+  "defaultSeverity": "warn"
 }

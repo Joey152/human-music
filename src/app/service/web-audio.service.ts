@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 declare var AudioContext, webkitAudioContext: any;
 
 @Injectable()
-export class WebAudioService { 
+export class WebAudioService {
 
   audioContext: AudioContext;
   oscillators: Map<string, OscillatorNode[]>;
   frequency: number;
-  baseFrequency: number = 55;
+  baseFrequency = 55;
 
   constructor() {
     this.audioContext = new AudioContext();
@@ -20,31 +20,31 @@ export class WebAudioService {
   }
 
   playFrequency(n: number, id: string): void {
-    let oscillator = this.audioContext.createOscillator();
+    const oscillator = this.audioContext.createOscillator();
     oscillator.connect(this.audioContext.destination);
     oscillator.frequency.value = n;
     oscillator.type = 'square';
 
     oscillator.start();
 
-    if (!this.oscillators.has(id)) this.oscillators.set(id, []);
+    if (!this.oscillators.has(id)) { this.oscillators.set(id, []); }
     this.oscillators.get(id).push(oscillator);
   }
 
   playChord(n: number, chord: string, id: string) {
-    switch(chord) {
-      case "single":
+    switch (chord) {
+      case 'single':
         this.playFrequency(this.note(n), id);
         break;
-      case "majorTriad":
+      case 'majorTriad':
         this.playFrequency(this.note(n), id);
-        this.playFrequency(this.note(n)*5/4, id);
-        this.playFrequency(this.note(n)*3/2, id);
+        this.playFrequency(this.note(n) * 5 / 4, id);
+        this.playFrequency(this.note(n) * 3 / 2, id);
         break;
-      case "minorTriad":
+      case 'minorTriad':
         this.playFrequency(this.note(n), id);
-        this.playFrequency(this.note(n)*6/5, id);
-        this.playFrequency(this.note(n)*3/2, id);
+        this.playFrequency(this.note(n) * 6 / 5, id);
+        this.playFrequency(this.note(n) * 3 / 2, id);
         break;
       default:
         this.playFrequency(this.note(n), id);
@@ -58,6 +58,6 @@ export class WebAudioService {
   }
 
   note(n: number) {
-    return this.baseFrequency*(Math.pow(2,n/12));
+    return this.baseFrequency * (Math.pow(2, n / 12));
   }
 }
