@@ -57,7 +57,7 @@ export class WebAudioService {
     }
   }
 
-  private note(n: number) {
+  note(n: number) {
     return this.baseFrequency*(Math.pow(2,n/12));
   }
 }

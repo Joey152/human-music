@@ -7,13 +7,25 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SoundButtonComponent implements OnInit {
 
-  @Input() offsetA: number;
+  readonly notes = ['A', '', 'B', 'C', '', 'D', '', 'E', 'F', '', 'G', ''];
+
   @Input() pressed: boolean;
+  @Input()
+  set frequency(f: number) {
+    const i = this.mod(Math.round(Math.log2(f/440) * 12), 12);
+    this.label = this.notes[i];
+  }
+
   label: string
 
   constructor() { }
 
   ngOnInit() {
-    this.label = String.fromCharCode('A'.charCodeAt(0) + this.offsetA % 7);
+    
+  }
+
+  // TODO: move
+  mod(n: number, m: number) {
+    return ((n % m) + m) % m;
   }
 }

@@ -1,18 +1,19 @@
 <div class="piano">
   <hm-sound-button
     *ngFor="let note of notes; index as index"
+    [frequency]="webAudioService.note(note)"
     [pressed]="isPressed(index)"
     (mousedown)="play(note)"
     (mouseup)="stop(note)"
     (mouseleave)="stop(note)">
   </hm-sound-button>
-  <div class="chord-picker">
-    <label for="chord">Chord</label>
-    <select id="chord" [(ngModel)]="chord">
-      <option value="single" selected>Single</option>
-      <option value="majorTriad">Major Triad</option>
-      <option value="minorTriad">Minor Triad</option>
-    </select>
-  </div>
-  <input [(ngModel)]="webAudioService.baseFrequency" name="baseFrequency">
 </div>
+<div class="chord-picker">
+  <label for="chord">Chord</label>
+  <select id="chord" [(ngModel)]="chord">
+    <option value="single" selected>Single</option>
+    <option value="majorTriad">Major Triad</option>
+    <option value="minorTriad">Minor Triad</option>
+  </select>
+</div>
+<input [(ngModel)]="webAudioService.baseFrequency" name="baseFrequency">
